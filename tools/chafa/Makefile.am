@@ -25,6 +25,8 @@ chafa_SOURCES = \
 	chicle-placement-counter.h \
 	chicle-png-loader.c \
 	chicle-png-loader.h \
+	chicle-testcard.c \
+    chicle-testcard.h \
 	chicle-named-colors.c \
 	chicle-named-colors.h \
 	qoi.h \

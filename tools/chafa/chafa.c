@@ -46,6 +46,7 @@
 #include "chicle-options.h"
 #include "chicle-path-queue.h"
 #include "chicle-placement-counter.h"
+#include "chicle-testcard.h"
 #include "chicle-util.h"
 
 /* Include after glib.h for G_OS_WIN32 */
@@ -996,6 +997,49 @@ run_grid (ChiclePathQueue *path_queue)
     return 0;
 }
 
+static int
+run_testcard(void)
+{   TestcardData *tc_data;
+    ChafaCanvasConfig *config;
+    ChafaCanvas *canvas;
+    GString **gsa;
+    gint dest_width, dest_height;
+
+    tc_data = chicle_test_card_generate();
+    if (!tc_data)
+        return 1;
+
+    dest_width = options.width;
+    dest_height = options.height;
+
+    chafa_calc_canvas_geometry(tc_data->width,
+                               tc_data->height,
+                               &dest_width,
+                               &dest_height,
+                               options.font_ratio,
+                               options.scale >= CHICLE_SCALE_MAX - 0.1 ? TRUE : FALSE,
+                               options.stretch);
+
+    config = build_config(dest_width, dest_height, FALSE);
+    canvas = build_canvas(tc_data->pixel_type, tc_data->buffer,
+                          tc_data->width, tc_data->height, tc_data->rowstride,
+                          config, -1, CHAFA_TUCK_FIT);
+
+
+    chafa_canvas_print_rows(canvas, options.term_info, &gsa, NULL);
+    write_image_prologue(NULL, TRUE, TRUE, FALSE, dest_height);
+    write_image(gsa, dest_width);
+    write_image_epilogue(NULL, FALSE, dest_width);
+    chafa_term_flush(term);
+
+    chafa_free_gstring_array(gsa);
+    chafa_canvas_unref(canvas);
+    chafa_canvas_config_unref(config);
+    chicle_test_card_free(tc_data);
+
+    return 0;
+}
+
 static void
 proc_init (void)
 {
@@ -1041,13 +1085,18 @@ main (int argc, char *argv [])
 
     /* --version and --help can skip all the init/deinit stuff */
     if (options.skip_processing
-        || chicle_path_queue_get_length (global_path_queue) == 0)
+        || chicle_path_queue_get_length (global_path_queue) == 0
+        && !options.show_testcard)
         goto out;
 
     prepare_fast_exit (options.term_info);
     tty_options_init ();
 
-    if (options.grid_width > 0 || options.grid_height > 0)
+    if (options.show_testcard)
+    {
+        ret = run_testcard();
+    }
+    else if (options.grid_width > 0 || options.grid_height > 0)
     {
         ret = run_grid (global_path_queue);
     }

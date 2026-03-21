@@ -90,6 +90,7 @@ typedef struct
     gboolean show_help;
     gboolean show_version;
     gboolean skip_processing;
+    gboolean show_testcard;
 
     GList *args;
     ChafaCanvasMode mode;

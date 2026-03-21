@@ -219,6 +219,7 @@ print_summary (void)
     "                     to wait for a response, in seconds. Defaults to "
                           G_STRINGIFY (CHICLE_PROBE_DURATION_DEFAULT) ".\n"
     "      --probe-mode=ARG  How to probe the terminal [any, ctty, stdio].\n"
+    "      --test         Show test card image.\n"
     "      --version      Show version.\n"
     "  -v, --verbose      Be verbose.\n"
 
@@ -1843,6 +1844,7 @@ chicle_parse_options (int *argc, char **argv [])
         /* Note: The descriptive blurbs here are never shown to the user */
 
         { "help",        'h',  0, G_OPTION_ARG_NONE,     &options.show_help,    "Show help", NULL },
+        { "test",        '\0', 0, G_OPTION_ARG_NONE,     &options.show_testcard,  "Show test card image", NULL },
         { "version",     '\0', 0, G_OPTION_ARG_NONE,     &options.show_version, "Show version", NULL },
         { "verbose",     'v',  0, G_OPTION_ARG_NONE,     &options.verbose,      "Be verbose", NULL },
         { "align",       '\0', 0, G_OPTION_ARG_CALLBACK, parse_align_arg,       "Align", NULL },
@@ -2333,7 +2335,7 @@ chicle_parse_options (int *argc, char **argv [])
 
         options.args = g_list_append (NULL, g_strdup ("-"));
     }
-    else if (chicle_path_queue_get_length (global_path_queue) == 0)
+    else if (chicle_path_queue_get_length (global_path_queue) == 0 && !options.show_testcard)
     {
         /* No arguments, no pipe, no file lists, and no cry for help. */
         print_brief_summary ();

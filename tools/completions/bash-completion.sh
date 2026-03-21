@@ -5,7 +5,7 @@ _chafa()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-  opts="--help -h --version -v --verbose --probe --files --files0 --format -f --optimize -O --relative --passthrough --polite --align --clear --center -C --exact-size --fit-width --font-ratio --grid -g --label -l --link --margin-bottom --margin-right --scale --size -s --stretch --view-size --animate --duration -d --speed --watch --bg --colors -c --color-extractor --color-space --dither --dither-grain --dither-intensity --fg --invert --preprocess -p --threshold -t --threads --work -w --fg-only --fill --glyph-file --symbols --dump-detect --fuzz-options --zoom"
+  opts="--help -h --version -v --verbose --test --probe --files --files0 --format -f --optimize -O --relative --passthrough --polite --align --clear --center -C --exact-size --fit-width --font-ratio --grid -g --label -l --link --margin-bottom --margin-right --scale --size -s --stretch --view-size --animate --duration -d --speed --watch --bg --colors -c --color-extractor --color-space --dither --dither-grain --dither-intensity --fg --invert --preprocess -p --threshold -t --threads --work -w --fg-only --fill --glyph-file --symbols --dump-detect --fuzz-options --zoom"
 
   if [[ ${cur} == -* ]] ; then
     COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )

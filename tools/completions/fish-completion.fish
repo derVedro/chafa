@@ -5,6 +5,7 @@ complete -c chafa        -l 'files0'  -x -a '(- _files)'  -d 'Read list of files
 complete -c chafa -o 'h' -l 'help'                        -d 'Show help'
 complete -c chafa        -l 'probe'   -x -a 'auto on off' -d 'Probe terminal\'s capabilities and wait for response'
 complete -c chafa        -l 'version'                     -d 'Show version'
+complete -c chafa        -l 'test'                        -d 'Show test card image'
 complete -c chafa -o 'v' -l 'verbose'                     -d 'Be verbose'
 
 complete -c chafa -o 'f' -l 'format'      -x -a 'iterm kitty sixels symbols' -d 'Set output format'
