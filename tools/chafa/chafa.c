@@ -1085,8 +1085,7 @@ main (int argc, char *argv [])
 
     /* --version and --help can skip all the init/deinit stuff */
     if (options.skip_processing
-        || chicle_path_queue_get_length (global_path_queue) == 0
-        && !options.show_testcard)
+        || (chicle_path_queue_get_length (global_path_queue) == 0 && !options.show_testcard))
         goto out;
 
     prepare_fast_exit (options.term_info);
