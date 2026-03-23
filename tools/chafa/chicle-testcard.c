@@ -90,8 +90,10 @@ draw_bars_of_namedcolors(const TestcardData *img, const BBox dims, const char **
 {
     static const ChicleNamedColor default_color = { { 0, 0, 0 }, NULL };
 
-    // This shouldn't be a cause for concern; col_count is small.
-    guint8 colors[col_count * TC_CHANNELS];
+    guint8 *colors = g_malloc(col_count * TC_CHANNELS);
+    if (!colors) {
+        return;
+    }
 
     for (size_t i = 0; i < col_count; i++) {
         const ChicleNamedColor *color = chicle_find_color_by_name(color_names[i]);
@@ -105,6 +107,7 @@ draw_bars_of_namedcolors(const TestcardData *img, const BBox dims, const char **
     }
 
     draw_bars_internal(img, dims, colors, col_count);
+    g_free(colors);
 }
 
 static void
@@ -117,8 +120,10 @@ draw_gradient_bars(const TestcardData *img, const BBox dims, guint segments, con
     if (segments == 0 || segments > dims.width) {
         segments = dims.width;
     }
-
-    guint8 gradient_colors[segments * TC_CHANNELS];
+    guint8 *gradient_colors = g_malloc(segments * TC_CHANNELS);
+    if (!gradient_colors) {
+        return;
+    }
     for (size_t i = 0; i < segments; i++) {
         // avoid div by zero
         gfloat t = (segments > 1) ? (gfloat)i / (segments - 1) : 0.0f;
@@ -129,6 +134,7 @@ draw_gradient_bars(const TestcardData *img, const BBox dims, guint segments, con
     }
 
     draw_bars_internal(img, dims, gradient_colors, segments);
+    g_free(gradient_colors);
 }
 
 static void
